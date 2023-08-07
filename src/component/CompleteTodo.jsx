@@ -11,8 +11,8 @@ export default function CompleteTodo({todoList2,changePriority2,remove}){
                 return <div className='todo-lists' key={data.id}>
                     <Input type='checkbox' name={data.priority} id={data.id} checked onChange={changePriority2} />
 
-                    <p className={`priority-color-${data.priority}`}
-                        style={{ width: "350px", padding: "0px 6px" }}
+                    <p className={`priority-color-${data.priority} title-paragraph`}
+                        
                     ><del>{data.title}</del></p>
                     <i className="bi bi-trash3 delete-icon" onClick={(e) => remove(e, data.id)}></i>
                 </div>

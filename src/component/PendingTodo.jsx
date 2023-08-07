@@ -12,8 +12,8 @@ export default function PendingTodo({todoList,remove,changePriority}) {
                     return <div className='todo-lists' key={data.id}>
                         <Input type='checkbox' name={data.priority} id={data.id} onChange={changePriority} />
                         <p
-                            className={`priority-color-${data.priority}`}
-                            style={{ width: "350px", padding: "0px 6px" }}
+                            className={`priority-color-${data.priority} title-paragraph`}
+                            
                         >{data.title}</p>
                         <i className="bi bi-trash3 delete-icon" onClick={(e) => remove(e, data.id)}></i>
                     </div>

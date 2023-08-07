@@ -83,3 +83,9 @@
 .priority-color-low{
   color:green
 }
+
+.title-paragraph{
+  width: 350px;
+  padding: 0px 6px;
+  word-wrap: break-word;
+}
