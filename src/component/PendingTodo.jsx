@@ -5,7 +5,7 @@ export default function PendingTodo({todoList,remove,changePriority}) {
 
 
     return (<div className='todo-pending'>
-        <p className='todo-title'>Pending Tast</p>
+        <p className='todo-title'>Pending Test</p>
         <div className='todo-pending-list'>
             {
                 todoList.map((data, index) => {

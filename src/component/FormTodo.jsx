@@ -33,7 +33,7 @@ function FormTodo({onChange,onAdd,oneList,onClear,onClick}) {
                         <Input type='radio' name="priority" value="low" id="low" className="todo-low" onChange={onClick} checked={oneList.priority === "low"} />
                         <label>low</label>
                     </div>
-                    <Button type="button" className="btn todo-clear-btn" onClick={onClear}>Clear Completed Tast</Button>
+                    <Button type="button" className="btn todo-clear-btn" onClick={onClear}>Clear Completed Test</Button>
                 </div>
             </form>
         </div>

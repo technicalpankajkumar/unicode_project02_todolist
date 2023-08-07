@@ -4,7 +4,7 @@ import Input from './field/Input'
 export default function CompleteTodo({todoList2,changePriority2,remove}){
 
     return ( <div className='todo-complete'>
-    <p className='todo-title'>Complete Tast</p>
+    <p className='todo-title'>Complete Test</p>
     <div className='todo-complete-list'>
         {
             todoList2.map((data, index) => {
