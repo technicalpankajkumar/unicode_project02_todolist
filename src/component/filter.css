@@ -1,0 +1,38 @@
+.filter{
+    display: flex;
+    justify-content: end;
+    flex-wrap: wrap;
+    padding: 5px 10px;
+}
+.filter-label{
+    font-size: 12px;
+}
+.filter-select-priority{
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid rgb(199, 199, 199);
+}
+.filter-select-status{
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid rgb(199, 199, 199);
+}
+.filter-select-status:focus{
+    outline-color: rgb(177, 177, 247);
+}
+.filter-select-priority:focus{
+    outline-color: rgb(177, 177, 247);
+}
+
+.filter-title-search{
+    width: 150px;
+    height: 29px;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 4px;
+    padding:0px 3px;
+}
+.filter-title-search:focus{
+    outline-color: rgb(177, 177, 247);
+}

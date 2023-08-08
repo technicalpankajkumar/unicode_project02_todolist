@@ -38,20 +38,18 @@
 }
 .btn{
   color: white;
-  height: 33px;
+  height: 30px;
   padding: 5px;
   border: none;
   margin-left: 5px;
   border-radius: 4px;
-  box-shadow: 0px 0px 1px 1px rgb(231, 231, 231);
+  font-weight: bold;
   cursor: pointer;
 }
-.todo-clear-btn{
-  background-color: rgb(150, 100, 8);
-  margin-top: 4px;
-}
+
 .todo-form .todo-add-btn{
    background-color: #0058a9;
+   margin-top:5px;
 }
  .todo-high, .todo-medium, .todo-low{
   margin: 0px 5px;
@@ -88,4 +86,34 @@
   width: 350px;
   padding: 0px 6px;
   word-wrap: break-word;
+}
+.border-red{
+  border:1px solid red;
+}
+.todo-clear-btn{
+  background-color: rgb(199, 11, 11);
+  margin-bottom: 2px;
+  padding: 3px;
+  height: 30px;
+}
+.todo-achieve-btn{
+  background-color: green;
+  padding: 3px;
+  height: 30px;
+}
+.complete-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0px;
+}
+.no-todo-list{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border: 1px solid gray;
+  border-radius: 2px;
+  box-sizing: border-box;
+
 }

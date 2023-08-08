@@ -11,8 +11,9 @@ function App() {
 
   const [todoList, setTodoList] = useState([])
   const [todoList2, setTodoList2] = useState([])
-  const [render,setRender]=useState(false)
-  const [oneList, setOneList] = useState({ id: "hjdfjasdh", title: "", priority: "low" })
+  const [render, setRender] = useState(false)
+  const [errMsg, setErrMes] = useState(false)
+  const [oneList, setOneList] = useState({ id: uniqueId, title: "", priority: "low" })
 
   useEffect(() => {
     setTodoList(JSON.parse(localStorage.getItem("todoList")) || [])
@@ -21,19 +22,26 @@ function App() {
 
   const onChange = (e) => {
     setOneList(pre => ({ ...pre, title: e.target.value }))
+    setErrMes(false)
   }
   const onClick = (e) => {
-    console.log(e.target.value)
     setOneList(pre => ({ ...pre, priority: e.target.value }))
   }
   const onAdd = () => {
-    setTodoList(pre => [...pre, { id: uniqueId, ...oneList }])
+    // setTodoList(pre => [...pre, { id: uniqueId, ...oneList }])
     //localStorage save
-    let getLocalStorageData = JSON.parse(localStorage.getItem("todoList")) || []
-    localStorage.setItem("todoList", JSON.stringify([...getLocalStorageData, { id: uniqueId, ...oneList }]))
+    if (Object.values(oneList).every(item => item !== "")) {
+      let getLocalStorageData = JSON.parse(localStorage.getItem("todoList")) || []
+      localStorage.setItem("todoList", JSON.stringify([...getLocalStorageData, { id: uniqueId, ...oneList }]))
 
-    //clear previous data in the field
-    setOneList({ title: "", priority: "low" })
+      //clear previous data in the field
+      setOneList({ title: "", priority: "low" })
+      setErrMes(false)
+      setRender(!render)
+    }else{
+      setErrMes(true)
+    }
+
   }
   const changePriority = (e) => {
     //normal state management code
@@ -77,7 +85,17 @@ function App() {
   }
 
   const onClear = () => {
+    localStorage.setItem("achieveList",JSON.stringify(todoList2))
     setTodoList2([])
+    localStorage.setItem("todoList2",JSON.stringify([]))
+  }
+  const onArchive =()=>{
+    let achieve = JSON.parse(localStorage.getItem("achieveList")) || [] 
+     if(achieve.length > 0){
+      localStorage.setItem("todoList2",JSON.stringify(achieve))
+      localStorage.setItem("achieveList",JSON.stringify([]))
+     }
+     setRender(!render)
   }
 
 
@@ -102,8 +120,8 @@ function App() {
       // setTodoList2(newData)
 
       //localStorage code 
-      let deleteIndex= todoList2.findIndex(data => data.id === id)
-      todoList2.splice(deleteIndex,1)
+      let deleteIndex = todoList2.findIndex(data => data.id === id)
+      todoList2.splice(deleteIndex, 1)
       localStorage.setItem("todoList2", JSON.stringify(todoList2))
 
       //render component change after change data
@@ -114,8 +132,8 @@ function App() {
   return (
     <div className='todo-container'>
       <div className="todo">
-        <FormTodo onChange={onChange} onAdd={onAdd} oneList={oneList} onClear={onClear} onClick={onClick} />
-        <CompleteTodo todoList2={todoList2} changePriority2={changePriority2} remove={remove} />
+        <FormTodo onChange={onChange} onAdd={onAdd} oneList={oneList} onClear={onClear} onClick={onClick} errMsg={errMsg}/>
+        <CompleteTodo todoList2={todoList2} onClear={onClear} onArchive={onArchive} changePriority2={changePriority2} remove={remove} />
         <PendingTodo todoList={todoList} remove={remove} changePriority={changePriority} />
       </div>
     </div>
