@@ -1,13 +1,21 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* todo-form css */
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.todo-form-container{
+  display: flex;
+  justify-content: center;
+}
+.todo-form{
+  border:1px solid gray;
+  padding: 10px;
+  border-radius: 4px;
+}
+.todo-form .text-input{
+  padding: 3px 6px;
+}
+.err{
+  border: 1px solid red;
+  border-radius: 4px;
+}
+.todo-form Button{
+  margin: 5px;
 }

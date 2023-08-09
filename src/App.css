@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
-}
+/* todo-form css */
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.todo-form-container{
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+.todo-form{
+  border:1px solid gray;
+  padding: 10px;
+  border-radius: 4px;
 }
+.todo-form .text-input{
+  padding: 3px 6px;
+}
+.err{
+  border: 1px solid red;
+  border-radius: 4px;
+}
+.todo-form Button{
+  margin: 5px;
+}
+/* filter css */
+.filter-container{
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+}
+.filter-container .filter-input{
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 0px 5px;
+}
+.filter-container .filter-input:focus{
+  outline-color: blue;
+}
+/* Table css */
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todo-table-container{
+  padding: 5px;
+}
+.todo-table{
+  width: 100%;
+  border-collapse: collapse;
+}
+.todo-table tr th{
+  border: 1px solid gray;
+  padding: 5px 10px;
+  background-color: antiquewhite;
+}
+.todo-table tr td{
+  border: 1px solid gray;
+  padding: 2px 10px;
+}
+.todo-table .title-color-high{
+  color:red
+}
+.todo-table .title-color-medium{
+  color:rgb(126, 126, 8)
+}
+.todo-table .title-color-low{
+  color:green
 }
