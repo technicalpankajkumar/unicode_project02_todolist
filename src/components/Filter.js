@@ -13,7 +13,7 @@ export default function Filter() {
     const {search,onSearch,onSearchClear,filterChange}= contextAPI;
 
     return <div className='filter-container'>
-        <Input type="text" value={search.title} placeholder='Search by Title' className='filter-input' onChange={filterChange}/>
+        <Input type="text" name="title" value={search.title} placeholder='Search by Title' className='filter-input' onChange={filterChange}/>
         &nbsp;
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <InputLabel id="priority-select-label">Priority</InputLabel>
@@ -51,9 +51,9 @@ export default function Filter() {
                 <MenuItem value={'pending'}>Pending</MenuItem>
             </Select>
         </FormControl>
-        &nbsp;
+        {/* &nbsp;
         <Button variant="contained" color="primary">Search Now</Button>
         &nbsp;
-        <Button variant="contained" color="error">Clear Now</Button>
+        <Button variant="contained" color="error">Clear Now</Button> */}
     </div>
 }
