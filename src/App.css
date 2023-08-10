@@ -24,6 +24,7 @@
   display: flex;
   align-items: center;
   padding: 10px 10px;
+  justify-content: space-between;
 }
 .filter-container .filter-input{
   border: 1px solid gray;
@@ -59,4 +60,48 @@
 }
 .todo-table .title-color-low{
   color:green
+}
+
+
+/* pagination-class */
+
+.pagination-class{
+  display: flex;
+  list-style-type: none;
+  padding: 5px 0px;
+  margin: 0px;
+}
+.pagination-class li{
+  padding: 5px 0px;
+  border-radius: 4px;
+  margin: 0px 5px;
+  cursor: pointer;
+}
+.pagination-active-page{
+   background: rgb(98, 120, 233);
+   color: white;
+   cursor: pointer;
+}
+.previous.pagination-disabled-page {
+  background: rgb(212, 184, 133);
+  border-radius: 4px;
+  padding: 5px;
+  color: black;
+  cursor: not-allowed;
+}
+.next.pagination-disabled-page {
+  background: rgb(212, 184, 133);
+  border-radius: 4px;
+  padding: 5px;
+  color: black;
+  cursor: not-allowed;
+}
+.pageClassName{
+  cursor: pointer;
+  text-align: center;
+}
+.pageClassName a{
+  font-size: 16px;
+  width: 50px;
+  padding: 5px 15px;
 }

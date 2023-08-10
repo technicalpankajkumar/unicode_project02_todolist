@@ -1,9 +1,10 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useCallback, useEffect, useState } from 'react'
 import TodoForm from './TodoForm'
 import { v4 as uuid } from 'uuid'
 import Table from './Table'
 import Filter from './Filter'
 import ClearArchive from './ClearArchive'
+import ArchiveDialog from './ArchiveDialog'
 
 export const context = createContext()
 
@@ -14,8 +15,11 @@ function Layout() {
     const [titleErr, setTitleErr] = useState(false)
     const [render, setRender] = useState(false)
 
-    const [search, setSearch] = useState({ title: "", status: "", priority: "" })
+    const [search, setSearch] = useState({ title: "", status: "none", priority: "none" })
     const [archiveValue, setArchiveValue] = useState([])
+    const [openArchive, setOpenArchive] = useState(false)
+
+    const [modelRender, setModelRender] = useState(false)
 
     useEffect(() => {
         setTodoList(JSON.parse(localStorage.getItem("todoLists")) || [])
@@ -28,7 +32,7 @@ function Layout() {
         setTitleErr(false)
     }
 
-    const onSmash = () => {
+    const onSmash = useCallback(() => {
         let storageList = JSON.parse(localStorage.getItem("todoLists")) || []
 
         if (Object.values(obj).every(item => item !== '')) {
@@ -41,7 +45,7 @@ function Layout() {
         else {
             setTitleErr(true)
         }
-    }
+    }, [])
 
     const onStatusChange = (e, id) => {
         let localStore = JSON.parse(localStorage.getItem("todoLists") || [])
@@ -59,38 +63,31 @@ function Layout() {
         }
     }
 
-    const onDelete=(id)=>{
+    const onDelete = useCallback((id) => {
         let localStore = JSON.parse(localStorage.getItem("todoLists") || [])
-         const index = localStore.findIndex(item => item.id == id)
-         
-         localStore.splice(index,1)
-         localStorage.setItem("todoLists",JSON.stringify(localStore))
-         setRender(!render)
-    }
+        const index = localStore.findIndex(item => item.id == id)
+
+        localStore.splice(index, 1)
+        localStorage.setItem("todoLists", JSON.stringify(localStore))
+        setRender(!render)
+    }, [])
 
     // filter
     const filterChange = (e) => {
         const { name, value } = e.target;
-        console.log(name, value)
         setSearch(pre => ({ ...pre, [name]: value }))
     }
-    const onSearch = () => {
-
-    }
-    const onSearchClear = () => {
-
+    const onClearSearch = () => {
+        setSearch({ title: "", status: "none", priority: "none" })
     }
 
     // archive and clear completed task
 
     const onArchive = () => {
-        let localData = JSON.parse(localStorage.getItem("archiveLists")) || []
-        let localTodoData = JSON.parse(localStorage.getItem("todoLists")) || []
-
-        localStorage.setItem("todoLists", JSON.stringify([...localTodoData,...localData]))
-        localStorage.setItem("archiveLists", JSON.stringify([]))
         setRender(!render)
+        setOpenArchive(true)
     }
+
 
     const onClearCompletedTask = () => {
         let localData = JSON.parse(localStorage.getItem("archiveLists")) || []
@@ -108,18 +105,21 @@ function Layout() {
     return (
         <context.Provider
             value={{
-                obj,setObj, onChange,
+                obj, setObj, onChange,
                 onSmash, titleErr,
-                search, onSearch,
-                onSearchClear, filterChange,
+                search, filterChange,
                 onArchive, onClearCompletedTask,
-                archiveValue , onDelete, todoList , onStatusChange
+                archiveValue, onDelete, todoList, onStatusChange
+                , onClearSearch, archiveValue, setArchiveValue,setRender
             }}>
             <TodoForm />
             <div style={{ border: "1px solid gray", borderRadius: "4px", marginTop: "10px" }}>
-                <Filter />
-                <Table/>
-                <ClearArchive />
+                <Filter search={search} filterChange={filterChange} onClearSearch={onClearSearch}   > <ClearArchive isArchiveDialog={false} onClearCompletedTask={onClearCompletedTask}/> </Filter>
+                <Table archiveButton={false} data={todoList} onDelete={onDelete} search={search} onStatusChange={onStatusChange} />
+            </div>
+            <div>
+                {/* MODEL IS HERE */}
+                <ArchiveDialog openArchive={openArchive} setOpenArchive={setOpenArchive} />
             </div>
         </context.Provider>
     )
