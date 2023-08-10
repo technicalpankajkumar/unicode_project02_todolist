@@ -32,7 +32,7 @@ function Layout() {
         setTitleErr(false)
     }
 
-    const onSmash = useCallback(() => {
+    const onSmash = () => {
         let storageList = JSON.parse(localStorage.getItem("todoLists")) || []
 
         if (Object.values(obj).every(item => item !== '')) {
@@ -45,7 +45,7 @@ function Layout() {
         else {
             setTitleErr(true)
         }
-    }, [])
+    }
 
     const onStatusChange = (e, id) => {
         let localStore = JSON.parse(localStorage.getItem("todoLists") || [])
