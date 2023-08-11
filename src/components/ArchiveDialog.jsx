@@ -12,7 +12,13 @@ import { context } from "./Layout";
 
 export default function ArchiveDOM({ openArchive, setOpenArchive }) {
   const contextApi = React.useContext(context);
-  const { archiveValue, setArchiveValue, setRender, unArchiveValue,setUnArchiveValue } = contextApi;
+  const {
+    archiveValue,
+    setArchiveValue,
+    setRender,
+    unArchiveValue,
+    setUnArchiveValue,
+  } = contextApi;
 
   const [searchArchive, setSearchArchive] = useState({
     title: "",
@@ -26,18 +32,17 @@ export default function ArchiveDOM({ openArchive, setOpenArchive }) {
 
     //this part of code manage unArchive remaining value after close tab click without unarchive button click
 
-    localStorage.setItem("archiveLists",JSON.stringify(archiveValue))
-        
-    //this part of code empty unArchive value after close tab click;
-    setUnArchiveValue([])
+    localStorage.setItem("archiveLists", JSON.stringify(archiveValue));
 
+    //this part of code empty unArchive value after close tab click;
+    setUnArchiveValue([]);
   };
-// this delete function not work in this time after some time use this function for need.
+  // this delete function not work in this time after some time use this function for need.
   const onDelete = () => {};
 
   //this function is clear search field in archive filter
   const onClearSearchArchive = () => {
-    // this part of code clear search value in searchArchive state 
+    // this part of code clear search value in searchArchive state
     setSearchArchive({ title: "", status: "none", priority: "none" });
   };
 
@@ -47,46 +52,53 @@ export default function ArchiveDOM({ openArchive, setOpenArchive }) {
     setSearchArchive((pre) => ({ ...pre, [name]: value }));
   };
 
-  const onSelectAll=(e,data)=>{
-    if(e.target.checked){
-      // setUnArchiveValue(data)
-    }else{
-      // setUnArchiveValue([])
+  const onSelectAll = (e, data) => {
+    let copyData = [...archiveValue]
+
+    if (e.target.checked) {
+      setUnArchiveValue(data)
+      localStorage.setItem("archiveLists",JSON.stringify([]))
+    } else {
+      setUnArchiveValue([])
+      localStorage.setItem("archiveLists",JSON.stringify(copyData))
     }
-        
-  }
+  };
 
   //this function work in check selection one by one in archive table
-  const onSelect=(e,id)=>{
+  const onSelect = (e, id) => {
+    let archiveData = JSON.parse(localStorage.getItem("archiveLists")) || [];
 
-    let archiveData = JSON.parse(localStorage.getItem("archiveLists")) || []
-     
-      if(e.target.checked){
-          let obj =  archiveData.find((item)=> item.id === id)  //find data in achiveList using id
-          let newArchiveData = archiveData.filter(item => item.id !== id)  //filter remaining item after find id archive data
+    if (e.target.checked) {
+      let obj = archiveData.find((item) => item.id === id); //find data in achiveList using id
+      let newArchiveData = archiveData.filter((item) => item.id !== id); //filter remaining item after find id archive data
 
-          setUnArchiveValue(pre => {
-            return [...pre,obj]
-          })
+      setUnArchiveValue((pre) => {
+        return [...pre, obj];
+      });
 
-        localStorage.setItem('archiveLists',JSON.stringify(newArchiveData))
+      localStorage.setItem("archiveLists", JSON.stringify(newArchiveData));
+    } else {
+      let arr = unArchiveValue.filter((item) => item.id !== id);
+      let obj = unArchiveValue.find((item) => item.id === id);
 
-      }else {
-         let arr = unArchiveValue.filter(item => item.id !== id)
-         let obj = unArchiveValue.find(item => item.id === id)
+      localStorage.setItem(
+        "archiveLists",
+        JSON.stringify([...archiveData, obj])
+      );
 
-         localStorage.setItem('archiveLists',JSON.stringify([...archiveData,obj]))
-
-         setUnArchiveValue(arr)
-      }
-  }
+      setUnArchiveValue(arr);
+    }
+  };
 
   const onUnArchive = () => {
-    let localTodoData = JSON.parse(localStorage.getItem("todoLists")) || []
+    let localTodoData = JSON.parse(localStorage.getItem("todoLists")) || [];
 
-    localStorage.setItem("todoLists", JSON.stringify([...localTodoData, ...unArchiveValue])) //working expected part
-    
-    setUnArchiveValue([])
+    localStorage.setItem(
+      "todoLists",
+      JSON.stringify([...localTodoData, ...unArchiveValue])
+    ); //working expected part
+
+    setUnArchiveValue([]);
 
     setOpenArchive(false);
     setRender((pre) => !pre);
@@ -129,7 +141,6 @@ export default function ArchiveDOM({ openArchive, setOpenArchive }) {
                 search={searchArchive}
                 onSelectAll={onSelectAll}
                 onSelect={onSelect}
-                
               />
             </div>
           </DialogContentText>
