@@ -5,7 +5,7 @@ import { context } from './Layout'
 export default function ClearArchive({ isArchiveDialog, onClearCompletedTask, onUnArchive }) {
 
     const contextAPI = useContext(context)
-    const { onArchive, archiveValue, todoList } = contextAPI;
+    const { onArchive, archiveValue,unArchiveValue, todoList } = contextAPI;
 
     return (
         <>
@@ -17,7 +17,7 @@ export default function ClearArchive({ isArchiveDialog, onClearCompletedTask, on
                 </div>
             }
             {
-                isArchiveDialog && <Button variant='contained' color="primary" onClick={onUnArchive}>Unarchive {archiveValue.length}</Button>
+                isArchiveDialog && <Button variant='contained' color="primary" onClick={onUnArchive}>Unarchive {unArchiveValue.length}</Button>
             }
         </>
     )

@@ -1,47 +1,56 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import React, { useContext, useEffect, useState } from "react";
+import { Button, Checkbox, Input } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
 
-import ReactPaginate from 'react-paginate';
-import AlertDialog from './AlertDialog';
-import DeleteAlertDialog from './DeleteAlertDialog';
+import ReactPaginate from "react-paginate";
+import AlertDialog from "./AlertDialog";
+import DeleteAlertDialog from "./DeleteAlertDialog";
+import { context } from "./Layout";
 
-export default function Table({ itemsPerPage = 5, data, archiveButton, onDelete, onStatusChange, search }) {
-
-
+export default function Table({
+  itemsPerPage = 5,
+  data,
+  archiveStatus,
+  onDelete,
+  onStatusChange,
+  search,
+  onSelectAll,
+  onSelect,
+}) {
   const [itemOffset, setItemOffset] = useState(0);
 
+  const contextApi = useContext(context);
+  const { unArchiveValue, archiveValue } = contextApi;
+
   useEffect(() => {
-    setItemOffset(0)
-  }, [search])
+    setItemOffset(0);
+  }, [search]);
 
   let slicedRecord = [...data];
 
   //filter function always run.....
-  if (search.title || search.status != 'none' || search.priority != 'none') {
+  if (search.title || search.status != "none" || search.priority != "none") {
+    slicedRecord = slicedRecord.filter((todo) => {
+      return todo.title
+        ? todo.title.toLowerCase().includes(search.title.toLowerCase())
+        : true;
+    });
 
-    slicedRecord = slicedRecord.filter(todo => {
-      return ((todo.title ? todo.title.toLowerCase().includes(search.title.toLowerCase()) : true))
-    })
-
-    if (search.status != 'none') {
-      slicedRecord = slicedRecord.filter(todo => {
-        return (todo.status ? todo.status === search.status : true)
-      })
+    if (search.status != "none") {
+      slicedRecord = slicedRecord.filter((todo) => {
+        return todo.status ? todo.status === search.status : true;
+      });
     }
 
-    if (search.priority != 'none') {
-      slicedRecord = slicedRecord.filter(todo => {
-        return (todo.priority ? todo.priority === search.priority : true)
-      })
+    if (search.priority != "none") {
+      slicedRecord = slicedRecord.filter((todo) => {
+        return todo.priority ? todo.priority === search.priority : true;
+      });
     }
-
+  } else {
+    slicedRecord = [...data];
   }
-  else {
-    slicedRecord = [...data]
-  }
-
 
   //pagination code
 
@@ -60,58 +69,87 @@ export default function Table({ itemsPerPage = 5, data, archiveButton, onDelete,
   //
 
   return (
-    <div className='todo-table-container'>
+    <div className="todo-table-container">
+      
+      {/* //select multiple check in archive value */}
+      {archiveStatus && (
+        <span style={{ padding: "0px" }}>
+          Select All
+          <Checkbox onChange={(e) => onSelectAll(e, data)} />
+        </span>
+      )}
+
       <table className="todo-table">
         <thead>
           <tr>
+            {archiveStatus && <th style={{ padding: "0px" }}>Select</th>}
             <th>SN</th>
             <th>TITLE</th>
             <th>PRIORITY</th>
-            {
-              !archiveButton && <th>CHANGE STATUS</th>
-            }
+            {!archiveStatus && <th>CHANGE STATUS</th>}
             <th>STATUS</th>
-            {
-              !archiveButton && <th>ACTION</th>
-            }
-
+            {!archiveStatus && <th>ACTION</th>}
           </tr>
         </thead>
         <tbody>
-          {
-            currentItems.length != 0 ?
-              currentItems.map((item, index) => {
-                return (
-                  <tr key={item.id}>
-                    <td>{index + 1 + itemOffset}</td>
-                    <td className={`title-color-${item.priority}`}>{item.title}</td>
-                    <td>{item.priority}</td>
-                    {
+          {currentItems.length != 0 ? (
+            currentItems.map((item, index) => {
+              return (
+                <tr key={item.id}>
 
-                      !archiveButton && <td><input
-                        type="checkbox" value={item.status}
-                        checked={item.status === 'complete' ? true : false}
+                 {/* //this code for archive table  of one data check value */}
+
+                  {archiveStatus && (
+                    <td style={{ padding: "0px", textAlign: "center" }}>
+                       <Checkbox onChange={(e) => onSelect(e, item.id)}
+                        checked = { unArchiveValue.filter(todo=>todo.id===item.id).length ? true : false }
+                        />
+                    </td>
+                  )}
+
+                  <td>{index + 1 + itemOffset}</td>
+                  <td className={`title-color-${item.priority}`}> {item.title}</td>
+                  <td>{item.priority}</td>
+{/*                   
+                  //it code render of main table */}
+                  {!archiveStatus && (
+                    <td>
+                      <Checkbox
+                        value={item.status}
+                        checked={item.status === "complete" ? true : false}
                         onChange={(e) => onStatusChange(e, item.id)}
-                      /></td>
-                    }
-                    <td>{item.status}</td>
-                    {
-                      !archiveButton && <td>
-                        {
-                          item.status !== 'complete'
-                            ?
-                            <DeleteAlertDialog onDelete={onDelete} deleteId={item.id} />
-                            :
-                            <AlertDialog />
-                        }
+                      />
+                    </td>
+                  )}
 
-                      </td>
-                    }
-                  </tr>
-                );
-              })
-              : <tr><td colSpan={6} style={{ color: "gray", textAlign: "center", padding: "10px" }}>No Data Found</td></tr>
-          }
+                  <td>{item.status}</td>
+                 
+                  {!archiveStatus && (
+                    <td>
+                      {item.status !== "complete" ? (
+                        <DeleteAlertDialog
+                          onDelete={onDelete}
+                          deleteId={item.id}
+                        />
+                      ) : (
+                        <AlertDialog />
+                      )}
+                    </td>
+                  )}
+
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td
+                colSpan={6}
+                style={{ color: "gray", textAlign: "center", padding: "10px" }}
+              >
+                No Data Found
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
       <div>
@@ -119,10 +157,11 @@ export default function Table({ itemsPerPage = 5, data, archiveButton, onDelete,
           breakLabel="..."
           nextLabel="next >"
           onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
+          pageRangeDisplayed={2}
+          marginPagesDisplayed={2}
           pageCount={pageCount}
           previousLabel="< previous"
-          className='pagination-class'
+          className="pagination-class"
           pageClassName="pageClassName"
           activeClassName="pagination-active-page"
           disabledClassName="pagination-disabled-page"
