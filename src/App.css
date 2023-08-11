@@ -26,6 +26,15 @@
   padding: 10px 10px;
   justify-content: space-between;
 }
+@media screen and (max-width:768px) {
+    .filter-container{
+       flex-wrap: wrap;
+    }
+    .filter-container div:nth-child(1){
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
 .filter-container .filter-input{
   border: 1px solid gray;
   border-radius: 4px;
@@ -42,6 +51,11 @@
 .todo-table{
   width: 100%;
   border-collapse: collapse;
+}
+@media screen and (max-width:425px) {
+   .todo-table-container{
+     overflow: auto;
+  }
 }
 .todo-table tr th{
   border: 1px solid gray;
