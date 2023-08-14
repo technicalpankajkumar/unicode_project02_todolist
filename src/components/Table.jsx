@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Checkbox } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import AlertDialog from "./AlertDialog";
@@ -27,27 +27,32 @@ export default function Table({
   let slicedRecord = [...data];
 
   //filter function always run.....
-  if (search.title || search.status != "none" || search.priority != "none") {
-    slicedRecord = slicedRecord.filter((todo) => {
-      return todo.title
-        ? todo.title.toLowerCase().includes(search.title.toLowerCase())
-        : true;
-    });
-
-    if (search.status != "none") {
-      slicedRecord = slicedRecord.filter((todo) => {
-        return todo.status ? todo.status === search.status : true;
+  slicedRecord = useMemo(() => {
+    
+    let localRecord =[...slicedRecord]
+    if (search.title || search.status != "none" || search.priority != "none") {
+      localRecord = localRecord.filter((todo) => {
+        return todo.title
+          ? todo.title.toLowerCase().includes(search.title.toLowerCase())
+          : true;
       });
-    }
 
-    if (search.priority != "none") {
-      slicedRecord = slicedRecord.filter((todo) => {
-        return todo.priority ? todo.priority === search.priority : true;
-      });
+      if (search.status != "none") {
+        localRecord = localRecord.filter((todo) => {
+          return todo.status ? todo.status === search.status : true;
+        });
+      }
+
+      if (search.priority != "none") {
+        localRecord = localRecord.filter((todo) => {
+          return todo.priority ? todo.priority === search.priority : true;
+        });
+      }
+    } else {
+      localRecord = [...data];
     }
-  } else {
-    slicedRecord = [...data];
-  }
+    return localRecord;
+  },[data,search.title,search.priority,search.status])
 
   //pagination code
 
@@ -141,7 +146,7 @@ export default function Table({
             <tr>
               <td
                 colSpan={6}
-                style={{ color: "gray", textAlign: "center", padding: "10px" }}
+                style={{ color: "gray", textAlign: "center", padding: "10px", height: "100px" }}
               >
                 No Data Found
               </td>
