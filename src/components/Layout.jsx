@@ -40,6 +40,7 @@ function Layout() {
     setTitleErr(false);
   };
 
+  //ADD BUTTON IN FORM FUNCTION
   const onSmash = () => {
     let storageList = JSON.parse(localStorage.getItem("todoLists")) || [];
 

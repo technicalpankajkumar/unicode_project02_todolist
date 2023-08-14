@@ -6,8 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
-export default function DeleteAlertDialog({onDelete, deleteId}){
+export default function DeleteAlertDialog({ onDelete, deleteId }) {
 
   const [open, setOpen] = React.useState(false);
 
@@ -17,17 +18,19 @@ export default function DeleteAlertDialog({onDelete, deleteId}){
 
   const handleClose = () => {
     setOpen(false);
+    toast.success("Thanks for closing !!")
   };
 
-  const handleDelete =()=>{
-       onDelete(deleteId)
-       setOpen(false)
+  const handleDelete = () => {
+    onDelete(deleteId)
+    toast.success("item is deleted !!")
+    setOpen(false)
   }
 
   return (
     <div>
       <Button variant="outlined" onClick={handleClickOpen} startIcon={<DeleteIcon />}>
-         Delete
+        Delete
       </Button>
       <Dialog
         open={open}

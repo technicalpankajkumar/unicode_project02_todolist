@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Button, Checkbox, Input } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
-
+import { Checkbox } from "@mui/material";
 import ReactPaginate from "react-paginate";
 import AlertDialog from "./AlertDialog";
 import DeleteAlertDialog from "./DeleteAlertDialog";
@@ -70,7 +67,7 @@ export default function Table({
 
   return (
     <div className="todo-table-container">
-      
+
       {/* //select multiple check in archive value */}
       {archiveStatus && (
         <span style={{ padding: "0px" }}>
@@ -97,21 +94,21 @@ export default function Table({
               return (
                 <tr key={item.id}>
 
-                 {/* //this code for archive table  of one data check value */}
+                  {/* //this code for archive table  of one data check value */}
 
                   {archiveStatus && (
                     <td style={{ padding: "0px", textAlign: "center" }}>
-                       <Checkbox onChange={(e) => onSelect(e, item.id)}
-                        checked = { unArchiveValue.filter(todo=>todo.id===item.id).length ? true : false }
-                        />
+                      <Checkbox onChange={(e) => onSelect(e, item.id)}
+                        checked={unArchiveValue.filter(todo => todo.id === item.id).length ? true : false}
+                      />
                     </td>
                   )}
 
                   <td>{index + 1 + itemOffset}</td>
                   <td className={`title-color-${item.priority}`}> {item.title}</td>
                   <td>{item.priority}</td>
-{/*                   
-                  //it code render of main table */}
+
+                  {/* it code render of main table */}
                   {!archiveStatus && (
                     <td>
                       <Checkbox
@@ -123,7 +120,7 @@ export default function Table({
                   )}
 
                   <td>{item.status}</td>
-                 
+
                   {!archiveStatus && (
                     <td>
                       {item.status !== "complete" ? (
